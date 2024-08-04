@@ -7,3 +7,6 @@ gem "sinatra"
 gem "webrick"
 gem "rackup"
 gem "sinatra-contrib"
+
+gem 'sqlite3'
+gem "sinatra-activerecord"
