@@ -22,21 +22,16 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  puts "返ってくるparams: #{params}"
-
+  # puts "返ってくるparams: #{params}"
   title = params[:title]
   content = params[:content]
   memos = get_memos(FILE_PATH)
-
-  puts "現在のmemos: #{memos}"
-
+  # puts "現在のmemos: #{memos}"
   memo_count = memos.length
   new_memo_id = memo_count + 1
   new_memo = { 'title' => title, 'content' => content }
   memos[new_memo_id.to_s] = new_memo
-
-  puts "更新後のmemos: #{memos}"
-
+  # puts "更新後のmemos: #{memos}"
   set_memos(FILE_PATH, memos)
 
   redirect '/memos'
@@ -44,8 +39,10 @@ end
 
 get '/memos/:id' do
   memos = get_memos(FILE_PATH)
-  @title = memos[params[:id]]['title']
-  @content = memos[params[:id]]['content']
+  # puts "memos: #{memos}"
+  @memo = memos[params[:id]]
+  # puts "@memo: #{@memo}"
+  @memo['id'] = params[:id]
   erb :show
 end
 
