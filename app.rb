@@ -47,7 +47,23 @@ get '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  redirect '/memos/#{memo.id}'
+  memos = get_memos(FILE_PATH)
+  @memo = memos[params[:id]]
+  @memo['id'] = params[:id]
+  erb :edit
+end
+
+post '/memos/:id' do
+  memos = get_memos(FILE_PATH)
+  memos[params[:id]] = {
+    'title' => params[:title],
+    'content' => params[:content]
+  }
+  set_memos(FILE_PATH, memos)
+
+  # puts "更新後のmemos: #{memos}"
+
+  redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
