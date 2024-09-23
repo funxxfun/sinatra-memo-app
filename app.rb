@@ -66,6 +66,10 @@ post '/memos/:id' do
   redirect "/memos/#{params[:id]}"
 end
 
-delete '/memos/:id' do
+post '/memos/:id/delete' do
+  memos = get_memos(FILE_PATH)
+  memos.delete(params[:id])
+  set_memos(FILE_PATH, memos)
+
   redirect '/memos'
 end
