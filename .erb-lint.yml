@@ -1,0 +1,9 @@
+---
+glob: "**/*.erb"
+linters:
+  ErbSafety:
+    enabled: true
+  FinalNewline:
+    enabled: true
+  RequireInputAutocomplete:
+    enabled: true
