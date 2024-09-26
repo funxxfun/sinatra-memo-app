@@ -55,7 +55,7 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-post '/memos/:id' do
+patch '/memos/:id' do
   memos = get_memos(FILE_PATH)
   memos[params[:id]] = {
     'title' => params[:title],
@@ -68,7 +68,7 @@ post '/memos/:id' do
   redirect "/memos/#{params[:id]}"
 end
 
-post '/memos/:id/delete' do
+delete '/memos/:id' do
   memos = get_memos(FILE_PATH)
   memos.delete(params[:id])
   set_memos(FILE_PATH, memos)

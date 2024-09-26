@@ -4,6 +4,7 @@
 <form action="/memos/<%= @memo['id'] %>/edit" method="get">
   <button type="submit">編集する</button>
 </form>
-<form action="/memos/<%= @memo['id'] %>/delete" method="post">
+<form action="/memos/<%= @memo['id'] %>" method="post">
+  <input type="hidden" name="_method" value="delete">
   <button type="submit">削除</button>
 </form>
