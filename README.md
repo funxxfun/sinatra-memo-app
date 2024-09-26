@@ -16,7 +16,7 @@ Sinatraを使用したシンプルなメモアプリケーションです。
 1. リポジトリをクローンする
    ```
    git clone https://github.com/あなたのユーザー名/sinatra-memo-app.git
-   cd /sinatra-memo-app
+   cd sinatra-memo-app
    ```
 
 2. Gemfileをbundlerを使ってインストールする
