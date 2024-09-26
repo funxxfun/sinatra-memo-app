@@ -19,22 +19,22 @@ Sinatraを使用したシンプルなメモアプリケーションです。
    cd /sinatra-memo-app
    ```
 
-2. Gemfileをbundlerを使ってインストールします：
+2. Gemfileをbundlerを使ってインストールする
    ```
    bundle install
    ```
 
-3. からの`memos.json`ファイルを作成します
+3. からの`memos.json`ファイルを作成する
    ```
    echo '{}' > public/memos.json
    ```
 
-4. サーバーを起動します：
+4. サーバーを起動する
    ```
    bundle exec ruby app.rb
    ```
 
-5. ウェブブラウザを開き`http://localhost:4567/memos`にアクセスします
+5. ウェブブラウザを開き`http://localhost:4567/memos`にアクセスする
 
 
 
