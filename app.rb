@@ -3,8 +3,15 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'rack'
 
 FILE_PATH = 'public/memos.json'
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
 
 def get_memos(file_path)
   File.open(file_path) { |f| JSON.parse(f.read) }
@@ -24,16 +31,13 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  # puts "返ってくるparams: #{params}"
   title = params[:title]
   content = params[:content]
   memos = get_memos(FILE_PATH)
-  # puts "現在のmemos: #{memos}"
   memo_count = memos.length
   new_memo_id = memo_count + 1
   new_memo = { 'title' => title, 'content' => content }
   memos[new_memo_id.to_s] = new_memo
-  # puts "更新後のmemos: #{memos}"
   set_memos(FILE_PATH, memos)
 
   redirect '/memos'
@@ -41,31 +45,31 @@ end
 
 get '/memos/:id' do
   memos = get_memos(FILE_PATH)
-  # puts "memos: #{memos}"
   @memo = memos[params[:id]]
-  # puts "@memo: #{@memo}"
-  @memo['id'] = params[:id]
+  @memo['id'] = h(params[:id])
+  @memo['title'] = h(@memo['title'])
+  @memo['content'] = h(@memo['content'])
   erb :show
 end
 
 get '/memos/:id/edit' do
   memos = get_memos(FILE_PATH)
   @memo = memos[params[:id]]
-  @memo['id'] = params[:id]
+  @memo['id'] = h(params[:id])
+  @memo['title'] = h(@memo['title'])
+  @memo['content'] = h(@memo['content'])
   erb :edit
 end
 
 post '/memos/:id' do
   memos = get_memos(FILE_PATH)
   memos[params[:id]] = {
-    'title' => params[:title],
-    'content' => params[:content]
+    'title' => h(params[:title]),
+    'content' => h(params[:content])
   }
   set_memos(FILE_PATH, memos)
 
-  # puts "更新後のmemos: #{memos}"
-
-  redirect "/memos/#{params[:id]}"
+  redirect "/memos/#{h(params[:id])}"
 end
 
 post '/memos/:id/delete' do
