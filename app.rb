@@ -31,12 +31,15 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  title = params[:title]
-  content = params[:content]
+  title = h(params[:title])
+  content = h(params[:content])
   memos = get_memos(FILE_PATH)
   memo_count = memos.length
   new_memo_id = memo_count + 1
-  new_memo = { 'title' => title, 'content' => content }
+  new_memo = {
+    'title' => title,
+    'content' => content
+  }
   memos[new_memo_id.to_s] = new_memo
   set_memos(FILE_PATH, memos)
 
@@ -69,7 +72,7 @@ post '/memos/:id' do
   }
   set_memos(FILE_PATH, memos)
 
-  redirect "/memos/#{h(params[:id])}"
+  redirect "/memos/#{params[:id]}"
 end
 
 post '/memos/:id/delete' do
