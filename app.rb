@@ -21,6 +21,10 @@ def set_memos(file_path, memos)
   File.open(file_path, 'w') { |f| JSON.dump(memos, f) }
 end
 
+not_found do
+  erb :not_found
+end
+
 get '/memos' do
   @memos = get_memos(FILE_PATH)
   erb :index
