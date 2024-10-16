@@ -27,20 +27,26 @@ get '/memos' do
 end
 
 get '/memos/new' do
+  @memo = { 'title' => '', 'content' => '' }
   erb :new
 end
 
 post '/memos' do
-  title = params[:title]
-  content = params[:content]
+  @memo = {
+    'title' => params[:title].to_s.strip,
+    'content' => params[:content].to_s.strip
+  }
+
+  if @memo['title'].empty? || @memo['content'].empty?
+    @error = 'タイトルと内容を入力して下さい'
+
+    return erb :new
+  end
+
   memos = get_memos(FILE_PATH)
   memo_count = memos.length
   new_memo_id = memo_count + 1
-  new_memo = {
-    'title' => title,
-    'content' => content
-  }
-  memos[new_memo_id.to_s] = new_memo
+  memos[new_memo_id.to_s] = @memo
   set_memos(FILE_PATH, memos)
 
   redirect '/memos'
@@ -62,7 +68,19 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-post '/memos/:id' do
+patch '/memos/:id' do
+  @memo = {
+    'id' => params[:id],
+    'title' => params[:title],
+    'content' => params[:content]
+  }
+
+  if @memo['title'].empty? || @memo['content'].empty?
+    @error = 'タイトルと内容を入力して下さい'
+
+    return erb :edit
+  end
+
   memos = get_memos(FILE_PATH)
   memos[params[:id]] = {
     'title' => params[:title],
