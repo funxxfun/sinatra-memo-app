@@ -31,8 +31,8 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  title = h(params[:title])
-  content = h(params[:content])
+  title = params[:title]
+  content = params[:content]
   memos = get_memos(FILE_PATH)
   memo_count = memos.length
   new_memo_id = memo_count + 1
@@ -58,17 +58,15 @@ end
 get '/memos/:id/edit' do
   memos = get_memos(FILE_PATH)
   @memo = memos[params[:id]]
-  @memo['id'] = h(params[:id])
-  @memo['title'] = h(@memo['title'])
-  @memo['content'] = h(@memo['content'])
+  @memo['id'] = params[:id]
   erb :edit
 end
 
 post '/memos/:id' do
   memos = get_memos(FILE_PATH)
   memos[params[:id]] = {
-    'title' => h(params[:title]),
-    'content' => h(params[:content])
+    'title' => params[:title],
+    'content' => params[:content]
   }
   set_memos(FILE_PATH, memos)
 
