@@ -1,9 +1,17 @@
 <h1><%= h(@memo['title']) %></h1>
-<p><%= h(@memo['content']) %></p>
-<a href="/memos">一覧に戻る</a>
-<form action="/memos/<%= @memo['id'] %>/edit" method="get">
-  <button type="submit">編集する</button>
+<div class="memo-content">
+  <%= h(@memo['content']) %>
+</div>
+<a href="/memos" class="button">一覧に戻る</a>
+<form action="/memos/<%= @memo['id'] %>/edit" method="get" class="inline-form">
+  <button type="submit" class="button">編集する</button>
 </form>
+<<<<<<< HEAD
 <form action="/memos/<%= @memo['id'] %>/delete" method="post">
   <button type="submit">削除</button>
+=======
+<form action="/memos/<%= @memo['id'] %>" method="post" class="inline-form">
+  <input type="hidden" name="_method" value="delete">
+  <button type="submit" class="button button-danger">削除</button>
+>>>>>>> 13015df (CSSで見た目を調整)
 </form>
