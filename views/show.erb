@@ -6,12 +6,7 @@
 <form action="/memos/<%= @memo['id'] %>/edit" method="get" class="inline-form">
   <button type="submit" class="button">編集する</button>
 </form>
-<<<<<<< HEAD
-<form action="/memos/<%= @memo['id'] %>/delete" method="post">
-  <button type="submit">削除</button>
-=======
 <form action="/memos/<%= @memo['id'] %>" method="post" class="inline-form">
   <input type="hidden" name="_method" value="delete">
   <button type="submit" class="button button-danger">削除</button>
->>>>>>> 13015df (CSSで見た目を調整)
 </form>
