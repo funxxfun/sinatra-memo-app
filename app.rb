@@ -5,10 +5,23 @@ require 'sinatra/reloader'
 get '/memos' do
   erb :index
 end
+
 get '/memos/new' do
   erb :new
 end
+
 post '/memos' do
-  # メモを保存する処理をここに書く
+  redirect '/memos'
+end
+
+get '/memos/:id' do
+  erb :show
+end
+
+get '/memos/:id/edit' do
+  redirect '/memos/#{memo.id}'
+end
+
+delete '/memos/:id' do
   redirect '/memos'
 end
