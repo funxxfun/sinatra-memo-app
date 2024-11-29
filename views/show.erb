@@ -1,11 +1,12 @@
 <h1><%= @memo['title'] %></h1>
-<p><%= @memo['content'] %></p>
+<p class="memo-content"><%= @memo['content'] %></p>
 
+<div>
+  <form action="/memos/<%= @memo['id'] %>/edit" method="get" class="inline-form">
+    <button type="submit">編集する</button>
+  </form>
+  <form action="/memos/<%= @memo['id'] %>/delete" method="post" class="inline-form">
+    <button type="submit">削除</button>
+  </form>
+</div>
 <a href="/memos">一覧に戻る</a>
-<form action="/memos/<%= @memo['id'] %>/edit" method="get">
-  <button type="submit">編集する</button>
-</form>
-<form action="/memos/<%= @memo['id'] %>/delete" method="post">
-  <button type="submit">削除</button>
-</form>
-
