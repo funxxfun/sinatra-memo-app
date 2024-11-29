@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
@@ -61,6 +63,6 @@ post '/memos/:id/delete' do
   memos = get_memos(FILE_PATH)
   memos.delete(params[:id])
   set_memos(FILE_PATH, memos)
-  
+
   redirect '/memos'
 end
