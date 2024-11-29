@@ -98,6 +98,12 @@ GEM
       unicode-display_width (>= 2.4.0, < 4.0)
     rubocop-ast (1.36.2)
       parser (>= 3.3.1.0)
+    rubocop-fjord (0.3.0)
+      rubocop (>= 1.0)
+      rubocop-performance
+    rubocop-performance (1.23.0)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     securerandom (0.3.2)
@@ -131,6 +137,7 @@ DEPENDENCIES
   erb_lint
   rackup
   rexml
+  rubocop-fjord
   sinatra
   sinatra-contrib
   webrick

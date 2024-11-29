@@ -11,3 +11,6 @@ gem "sinatra-contrib"
 gem 'erb_lint', require: false
 gem 'rexml'
 
+group :development do
+  gem 'rubocop-fjord', require: false
+end
