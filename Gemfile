@@ -7,3 +7,7 @@ gem "sinatra"
 gem "webrick"
 gem "rackup"
 gem "sinatra-contrib"
+
+gem 'erb_lint', require: false
+gem 'rexml'
+
