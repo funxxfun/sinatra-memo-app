@@ -1,14 +1,15 @@
-
 <h1>メモの編集</h1>
+
+<%= erb :_error_messages %>
+
 <form action="/memos/<%= @memo['id'] %>" method="post">
   <div>
     <label for="title">タイトル:</label>
-    <input type="text" name="title" autocomplete="off" value="<%= @memo['title'] %>">
+    <input type="text" name="title" value="<%= @memo['title'] %>" autocomplete="off">
   </div>
   <div>
     <label for="content">内容:</label>
     <textarea name="content"><%= @memo['content'] %></textarea>
-</textarea>
   </div>
   <button type="submit">更新</button>
 </form>
