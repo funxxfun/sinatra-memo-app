@@ -3,8 +3,15 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'rack'
 
 FILE_PATH = 'public/memos.json'
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
 
 def get_memos(file_path)
   File.open(file_path) { |f| JSON.parse(f.read) }
@@ -38,7 +45,9 @@ end
 get '/memos/:id' do
   memos = get_memos(FILE_PATH)
   @memo = memos[params[:id]]
-  @memo['id'] = params[:id]
+  @memo['id'] = h(params[:id])
+  @memo['title'] = h(@memo['title'])
+  @memo['content'] = h(@memo['content'])
   erb :show
 end
 
@@ -46,6 +55,8 @@ get '/memos/:id/edit' do
   memos = get_memos(FILE_PATH)
   @memo = memos[params[:id]]
   @memo['id'] = params[:id]
+  @memo['title'] = h(@memo['title'])
+  @memo['content'] = h(@memo['content'])
   erb :edit
 end
 

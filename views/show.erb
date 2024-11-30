@@ -1,5 +1,5 @@
-<h1><%= @memo['title'] %></h1>
-<p class="memo-content"><%= @memo['content'] %></p>
+<h1><%= h(@memo['title']) %></h1>
+<p class="memo-content"><%= h(@memo['content']) %></p>
 
 <div>
   <form action="/memos/<%= @memo['id'] %>/edit" method="get" class="inline-form">
