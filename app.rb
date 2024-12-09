@@ -25,6 +25,10 @@ not_found do
   erb :not_found
 end
 
+get '/' do
+  redirect '/memos'
+end
+
 get '/memos' do
   @memos = get_memos(FILE_PATH)
   erb :index
