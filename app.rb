@@ -5,7 +5,7 @@ require 'sinatra/reloader'
 require 'json'
 require 'rack'
 
-FILE_PATH = 'public/memos.json'
+FILE_PATH = 'data/memos.json'
 
 helpers do
   def h(text)

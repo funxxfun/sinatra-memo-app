@@ -26,7 +26,14 @@ Sinatraを使用したシンプルなメモアプリケーションです。
 
 3. からの`memos.json`ファイルを作成する
    ```
-   echo '{}' > public/memos.json
+   mkdir -p data
+   echo '{}' > data/memos.json
+   ```
+
+   .gitignoreにdata/memos.jsonファイルを読み込ませる
+   ```
+    # gitignore
+   data/memos.json
    ```
 
 4. サーバーを起動する
@@ -45,4 +52,3 @@ Sinatraを使用したシンプルなメモアプリケーションです。
 - 既存メモの詳細を表示する
 - 既存メモを編集する
 - メモを削除する
-
