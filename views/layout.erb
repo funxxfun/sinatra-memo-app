@@ -10,6 +10,13 @@
   <div>
     <a href="/memos">トップページ</a>
   </div>
+
+  <% if @error %>
+    <div class="error-message">
+      <p><%= @error %></p>
+    </div>
+  <% end %>
+
   <%= yield %>
 </body>
 </html>
