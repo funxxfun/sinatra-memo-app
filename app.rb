@@ -63,9 +63,7 @@ end
 get '/memos/:id' do
   memos = get_memos(FILE_PATH)
   @memo = memos[params[:id]]
-  @memo['id'] = h(params[:id])
-  @memo['title'] = h(@memo['title'])
-  @memo['content'] = h(@memo['content'])
+  @memo['id'] = params[:id]
   erb :show
 end
 
