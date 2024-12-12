@@ -14,7 +14,7 @@ helpers do
 end
 
 def get_memos
-  File.open(FILE_PATH) { |f| JSON.parse(f.read) }
+  File.open(FILE_PATH) { |f| JSON.parse(f.read, symbolize_names: true) }
 end
 
 def set_memos(memos)
@@ -35,17 +35,17 @@ get '/memos' do
 end
 
 get '/memos/new' do
-  @memo = { 'title' => '', 'content' => '' }
+  @memo = { title: '', content: '' }
   erb :new
 end
 
 post '/memos' do
   memo = {
-    'title' => params[:title].to_s.strip,
-    'content' => params[:content].to_s.strip
+    title: params[:title].to_s.strip,
+    content: params[:content].to_s.strip
   }
 
-  if memo['title'].empty? || memo['content'].empty?
+  if memo[:title].empty? || memo[:content].empty?
     @error = 'タイトルと内容を入力して下さい'
     @memo = memo
 
@@ -55,7 +55,7 @@ post '/memos' do
   memos = get_memos
   memo_count = memos.length
   new_memo_id = memo_count + 1
-  memos[new_memo_id.to_s] = memo
+  memos[new_memo_id.to_s.to_sym] = memo
   set_memos(memos)
 
   redirect '/memos'
@@ -63,26 +63,25 @@ end
 
 get '/memos/:id' do
   memos = get_memos
-  @memo = memos[params[:id]]
-  @memo['id'] = params[:id]
+  @memo = memos[params[:id].to_sym]
+  @memo[:id] = params[:id]
   erb :show
 end
 
 get '/memos/:id/edit' do
   memos = get_memos
-  @memo = memos[params[:id]]
-  @memo['id'] = params[:id]
+  @memo = memos[params[:id].to_sym]
+  @memo[:id] = params[:id]
   erb :edit
 end
 
 post '/memos/:id' do
   memo = {
-    'id' => params[:id],
-    'title' => params[:title],
-    'content' => params[:content]
+    title: params[:title].to_s.strip,
+    content: params[:content].to_s.strip
   }
 
-  if memo['title'].empty? || memo['content'].empty?
+  if memo[:title].empty? || memo[:content].empty?
     @error = 'タイトルと内容を入力して下さい'
     @memo = memo
 
@@ -90,10 +89,7 @@ post '/memos/:id' do
   end
 
   memos = get_memos
-  memos[params[:id]] = {
-    'title' => params[:title],
-    'content' => params[:content]
-  }
+  memos[params[:id].to_sym] = memo
   set_memos(memos)
 
   redirect "/memos/#{params[:id]}"
