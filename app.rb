@@ -75,7 +75,7 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-post '/memos/:id' do
+put '/memos/:id' do
   memo = {
     title: params[:title].to_s.strip,
     content: params[:content].to_s.strip
@@ -95,9 +95,9 @@ post '/memos/:id' do
   redirect "/memos/#{params[:id]}"
 end
 
-post '/memos/:id/delete' do
+delete '/memos/:id' do
   memos = get_memos
-  memos.delete(params[:id])
+  memos.delete(params[:id].to_sym)
   set_memos(memos)
 
   redirect '/memos'

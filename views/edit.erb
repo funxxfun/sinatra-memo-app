@@ -1,6 +1,7 @@
 <h1>メモの編集</h1>
 
 <form action="/memos/<%= @memo[:id] %>" method="post">
+  <input type="hidden" name="_method" value="PUT">
   <div>
     <label for="title">タイトル:</label>
     <input type="text" id="title" name="title" value="<%= h(@memo[:title]) %>" autocomplete="off">

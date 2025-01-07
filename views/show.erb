@@ -5,7 +5,8 @@
   <form action="/memos/<%= h(@memo[:id]) %>/edit" method="get" class="inline-form">
     <button type="submit">編集する</button>
   </form>
-  <form action="/memos/<%= h(@memo[:id]) %>/delete" method="post" class="inline-form">
+  <form action="/memos/<%= h(@memo[:id]) %>" method="post" class="inline-form">
+    <input type="hidden" name="_method" value="DELETE">
     <button type="submit">削除</button>
   </form>
 </div>
