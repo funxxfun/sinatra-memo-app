@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>MEMO APP</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Sinatra MEMO APP</h1>
+  <div>
+    <a href="/memos">トップページ</a>
+  </div>
+
+  <% if @error %>
+    <div class="error-message">
+      <p><%= @error %></p>
+    </div>
+  <% end %>
+
+  <%= yield %>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<h1>メモの編集</h1>
+
+<form action="/memos/<%= @memo[:id] %>" method="post">
+  <input type="hidden" name="_method" value="PUT">
+  <div>
+    <label for="title">タイトル:</label>
+    <input type="text" id="title" name="title" value="<%= h(@memo[:title]) %>" autocomplete="off">
+  </div>
+  <div>
+    <label for="content">内容:</label>
+    <textarea id="content" name="content"><%= h(@memo[:content]) %></textarea>
+  </div>
+  <button type="submit">更新</button>
+</form>
+<a href="/memos">一覧へ戻る</a>
