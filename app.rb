@@ -7,6 +7,16 @@ require 'rack'
 
 FILE_PATH = 'data/memos.json'
 
+def initialize_memos_file
+  unless File.exist?(FILE_PATH)
+    File.open(FILE_PATH, 'w') { |f| JSON.dump({}, f) }
+  end
+end
+
+configure do
+  initialize_memos_file
+end
+
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
