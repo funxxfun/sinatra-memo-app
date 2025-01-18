@@ -24,24 +24,12 @@ Sinatraを使用したシンプルなメモアプリケーションです。
    bundle install
    ```
 
-3. からの`memos.json`ファイルを作成する
-   ```
-   mkdir -p data
-   echo '{}' > data/memos.json
-   ```
-
-   .gitignoreにdata/memos.jsonファイルを読み込ませる
-   ```
-    # gitignore
-   data/memos.json
-   ```
-
-4. サーバーを起動する
+3. サーバーを起動する
    ```
    bundle exec ruby app.rb
    ```
 
-5. ウェブブラウザを開き`http://localhost:4567/memos`にアクセスする
+4. ウェブブラウザを開き`http://localhost:4567/memos`にアクセスする
 
 
 
