@@ -1,1 +1,2 @@
-data/memos.json
+/data/*
+!/data/.gitkeep
