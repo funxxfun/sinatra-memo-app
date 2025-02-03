@@ -57,7 +57,9 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = get_memos
+  connection = db_connection
+  @memos = connection.exec('SELECT * FROM memos ORDER BY id').to_a
+  connection.close
   erb :index
 end
 
