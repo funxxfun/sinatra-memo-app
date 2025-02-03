@@ -5,10 +5,6 @@ require 'sinatra/reloader'
 require 'rack'
 require 'pg'
 
-configure do
-  initialize_memos_file
-end
-
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
@@ -34,34 +30,33 @@ end
 
 get '/memos' do
   connection = db_connection
-  @memos = connection.exec('SELECT * FROM memos ORDER BY id')
+  @memos = connection.exec('SELECT * FROM memos ORDER BY id DESC').to_a
   connection.close
   erb :index
 end
 
 get '/memos/new' do
-  @memo = { title: '', content: '' }
+  @memo = { 'title' => '', 'content' => '' }
   erb :new
 end
 
 post '/memos' do
-  memo = {
-    title: params[:title].to_s.strip,
-    content: params[:content].to_s.strip
-  }
+  title = params[:title].to_s.strip
+  content = params[:content].to_s.strip
 
-  if memo[:title].empty? || memo[:content].empty?
+  if title.empty? || content.empty?
     @error = 'タイトルと内容を入力して下さい'
-    @memo = memo
+    @memo =  { 'title'=> title, 'content'=> content }
 
     return erb :new
   end
 
-  memos = get_memos
-  memo_count = memos.length
-  new_memo_id = memo_count + 1
-  memos[new_memo_id.to_s.to_sym] = memo
-  set_memos(memos)
+  connection = db_connection
+  connection.exec_params(
+    'INSERT INTO memos (title, content) VALUES ($1, $2)',
+     [title, content]
+  )
+  connection.close
 
   redirect '/memos'
 end
@@ -75,36 +70,38 @@ get '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  memos = get_memos
-  @memo = memos[params[:id].to_sym]
-  @memo[:id] = params[:id]
-  erb :edit
+  connection = db_connection
+  result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [params[:id]])
+  @memo = result.first
+connection.close
+erb :edit
 end
 
 put '/memos/:id' do
-  memo = {
-    title: params[:title].to_s.strip,
-    content: params[:content].to_s.strip
-  }
+  title = params[:title].to_s.strip
+  content = params[:content].to_s.strip
 
-  if memo[:title].empty? || memo[:content].empty?
+  if title.empty? || content.empty?
     @error = 'タイトルと内容を入力して下さい'
-    @memo = memo
+    @memo = { 'id' => params[:id], 'title' => title, 'content' => content }
 
     return erb :edit
   end
 
-  memos = get_memos
-  memos[params[:id].to_sym] = memo
-  set_memos(memos)
+  connection = db_connection
+  connection.exec_params(
+    'UPDATE memos SET title = $1, content = $2 WHERE id = $3',
+    [title, content, params[:id]]
+  )
+  connection.close
 
   redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
-  memos = get_memos
-  memos.delete(params[:id].to_sym)
-  set_memos(memos)
+  connection = db_connection
+  connection.exec_params('DELETE FROM memos WHERE id = $1', [params[:id]])
+  connection.close
 
   redirect '/memos'
 end
