@@ -2,17 +2,8 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-# require 'json'
 require 'rack'
 require 'pg'
-
-FILE_PATH = 'data/memos.json'
-
-def initialize_memos_file
-  unless File.exist?(FILE_PATH)
-    File.open(FILE_PATH, 'w') { |f| JSON.dump({}, f) }
-  end
-end
 
 configure do
   initialize_memos_file
@@ -22,14 +13,6 @@ helpers do
   def h(text)
     Rack::Utils.escape_html(text)
   end
-end
-
-def get_memos
-  File.open(FILE_PATH) { |f| JSON.parse(f.read, symbolize_names: true) }
-end
-
-def set_memos(memos)
-  File.open(FILE_PATH, 'w') { |f| JSON.dump(memos, f) }
 end
 
 not_found do
@@ -43,13 +26,6 @@ def db_connection
     dbname: 'memos_db',
     user: 'shirasawafumi'
   )
-end
-
-get '/test-db' do
-  connection = db_connection
-  result = connection.exec('SELECT 1 as test')
-  connection.close
-  "Database connection successful: #{result[0]['test']}"
 end
 
 get '/' do
