@@ -58,7 +58,7 @@ end
 
 get '/memos' do
   connection = db_connection
-  @memos = connection.exec('SELECT * FROM memos ORDER BY id').to_a
+  @memos = connection.exec('SELECT * FROM memos ORDER BY id')
   connection.close
   erb :index
 end
@@ -91,9 +91,10 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  memos = get_memos
-  @memo = memos[params[:id].to_sym]
-  @memo[:id] = params[:id]
+  connection = db_connection
+  result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [params[:id]])
+  @memo = result.first
+  connection.close
   erb :show
 end
 
