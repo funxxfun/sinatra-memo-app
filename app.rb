@@ -36,6 +36,22 @@ not_found do
   erb :not_found
 end
 
+def db_connection
+  PG.connect(
+    host: 'localhost',
+    port: 5432,
+    dbname: 'memos_db',
+    user: 'shirasawafumi'
+  )
+end
+
+get '/test-db' do
+  connection = db_connection
+  result = connection.exec('SELECT 1 as test')
+  connection.close
+  "Database connection successful: #{result[0]['test']}"
+end
+
 get '/' do
   redirect '/memos'
 end
