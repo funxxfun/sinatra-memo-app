@@ -2,8 +2,9 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
+# require 'json'
 require 'rack'
+require 'pg'
 
 FILE_PATH = 'data/memos.json'
 
