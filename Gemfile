@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'pg'
 gem 'rackup'
 gem 'rexml'
 gem 'sinatra'
