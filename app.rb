@@ -4,6 +4,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'rack'
 require 'pg'
+require_relative 'config/database'
 
 helpers do
   def h(text)
@@ -11,17 +12,54 @@ helpers do
   end
 end
 
-not_found do
-  erb :not_found
+def find_all_memos
+  connection = db_connection
+  result = connection.exec('SELECT * FROM memos ORDER BY id DESC')
+  connection.close
+
+  result.to_a
 end
 
-def db_connection
-  PG.connect(
-    host: 'localhost',
-    port: 5432,
-    dbname: 'memos_db',
-    user: 'shirasawafumi'
+def find_memo(id)
+  connection = db_connection
+  result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [id])
+  connection.close
+
+  result.first
+end
+
+def create_memo(title, content)
+  return if title.empty? || content.empty?
+
+  connection = db_connection
+  connection.exec_params(
+    'INSERT INTO memos (title, content) VALUES ($1, $2)',
+    [title, content]
   )
+  connection.close
+  true
+end
+
+def update_memo(id, title, content)
+  return if title.empty? || content.empty?
+
+  connection = db_connection
+  connection.exec_params(
+    'UPDATE memos SET title = $1, content = $2 WHERE id = $3',
+    [title, content, id]
+  )
+  connection.close
+  true
+end
+
+def delete_memo(id)
+  connection = db_connection
+  connection.exec_params('DELETE FROM memos WHERE id = $1', [id])
+  connection.close
+end
+
+not_found do
+  erb :not_found
 end
 
 get '/' do
@@ -29,9 +67,7 @@ get '/' do
 end
 
 get '/memos' do
-  connection = db_connection
-  @memos = connection.exec('SELECT * FROM memos ORDER BY id DESC').to_a
-  connection.close
+  @memos = find_all_memos
   erb :index
 end
 
@@ -44,64 +80,41 @@ post '/memos' do
   title = params[:title].to_s.strip
   content = params[:content].to_s.strip
 
-  if title.empty? || content.empty?
+  if create_memo(title, content)
+    redirect '/memos'
+  else
     @error = 'タイトルと内容を入力して下さい'
     @memo =  { 'title'=> title, 'content'=> content }
 
     return erb :new
   end
-
-  connection = db_connection
-  connection.exec_params(
-    'INSERT INTO memos (title, content) VALUES ($1, $2)',
-     [title, content]
-  )
-  connection.close
-
-  redirect '/memos'
 end
 
 get '/memos/:id' do
-  connection = db_connection
-  result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [params[:id]])
-  @memo = result.first
-  connection.close
+  @memo = find_memo(params[:id])
   erb :show
 end
 
 get '/memos/:id/edit' do
-  connection = db_connection
-  result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [params[:id]])
-  @memo = result.first
-connection.close
-erb :edit
+  @memo = find_memo(params[:id])
+  erb :edit
 end
 
 put '/memos/:id' do
   title = params[:title].to_s.strip
   content = params[:content].to_s.strip
 
-  if title.empty? || content.empty?
+  if update_memo(params[:id], title, content)
+    redirect "/memos/#{params[:id]}"
+  else
     @error = 'タイトルと内容を入力して下さい'
     @memo = { 'id' => params[:id], 'title' => title, 'content' => content }
 
     return erb :edit
   end
-
-  connection = db_connection
-  connection.exec_params(
-    'UPDATE memos SET title = $1, content = $2 WHERE id = $3',
-    [title, content, params[:id]]
-  )
-  connection.close
-
-  redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
-  connection = db_connection
-  connection.exec_params('DELETE FROM memos WHERE id = $1', [params[:id]])
-  connection.close
-
+  delete_memo(params[:id])
   redirect '/memos'
 end
