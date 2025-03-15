@@ -8,6 +8,8 @@ Sinatraを使用したシンプルなメモアプリケーションです。
 
 - Ruby
 - Bundler
+- PostgreSQL
+
 
 ## 始め方
 
@@ -24,12 +26,34 @@ Sinatraを使用したシンプルなメモアプリケーションです。
    bundle install
    ```
 
-3. サーバーを起動する
+3. データベースをセットアップする
+```bash
+# PostgreSQLに接続する
+psql postgres
+
+# データベースを作成する
+CREATE DATABASE memos_db;
+
+# 作成したデータベースに接続する
+\c memos_db
+
+# メモを保存するテーブルを作成する
+CREATE TABLE memos (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL
+);
+
+# PostgreSQLを終了する
+\q
+
+
+4. サーバを起動する
    ```
    bundle exec ruby app.rb
    ```
 
-4. ウェブブラウザを開き`http://localhost:4567/memos`にアクセスする
+5. ウェブブラウザを開き`http://localhost:4567/memos`にアクセスする
 
 
 
