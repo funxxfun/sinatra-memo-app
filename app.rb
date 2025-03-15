@@ -84,7 +84,7 @@ post '/memos' do
     redirect '/memos'
   else
     @error = 'タイトルと内容を入力して下さい'
-    @memo =  { 'title'=> title, 'content'=> content }
+    @memo =  { 'title' => title, 'content' => content }
 
     return erb :new
   end
