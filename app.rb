@@ -5,6 +5,7 @@ require 'sinatra/reloader'
 require 'rack'
 require 'pg'
 require_relative 'config/database'
+require 'dotenv/load'
 
 helpers do
   def h(text)
