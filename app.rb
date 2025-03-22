@@ -13,17 +13,19 @@ helpers do
 end
 
 def find_all_memos
-  connection = db_connection
-  result = connection.exec('SELECT * FROM memos ORDER BY id DESC')
-  connection.close
+  result = nil
+  db_connection do |connection|
+    result = connection.exec('SELECT * FROM memos ORDER BY id DESC')
+  end
 
   result.to_a
 end
 
 def find_memo(id)
-  connection = db_connection
-  result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [id])
-  connection.close
+  result = nil
+  db_connection do |connection|
+    result = connection.exec_params('SELECT * FROM memos WHERE id = $1', [id])
+  end
 
   result.first
 end
@@ -31,31 +33,33 @@ end
 def create_memo(title, content)
   return if title.empty? || content.empty?
 
-  connection = db_connection
-  connection.exec_params(
-    'INSERT INTO memos (title, content) VALUES ($1, $2)',
-    [title, content]
-  )
-  connection.close
+  db_connection do |connection|
+    connection.exec_params(
+      'INSERT INTO memos (title, content) VALUES ($1, $2)',
+      [title, content]
+    )
+  end
+
   true
 end
 
 def update_memo(id, title, content)
   return if title.empty? || content.empty?
 
-  connection = db_connection
-  connection.exec_params(
-    'UPDATE memos SET title = $1, content = $2 WHERE id = $3',
-    [title, content, id]
-  )
-  connection.close
+  db_connection do |connection|
+    connection.exec_params(
+      'UPDATE memos SET title = $1, content = $2 WHERE id = $3',
+      [title, content, id]
+      )
+  end
+
   true
 end
 
 def delete_memo(id)
-  connection = db_connection
-  connection.exec_params('DELETE FROM memos WHERE id = $1', [id])
-  connection.close
+  db_connection do |connection|
+    connection.exec_params('DELETE FROM memos WHERE id = $1', [id])
+  end
 end
 
 not_found do
